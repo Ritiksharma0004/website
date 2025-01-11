@@ -61,7 +61,12 @@ const PatientDietChart = () => {
       setMealPlans(updatedMealPlans);
       localStorage.setItem("mealPlans", JSON.stringify(updatedMealPlans)); // Save to localStorage
       setNewMeal({ time: "", meal: "", ingredients: [], instruction: "" });
-      setSaved(true);
+
+      setSaved(true); // Set saved to true
+      toast.success("Meal plan saved successfully!"); // Trigger success toast
+
+      // Reset saved state after 2 seconds
+      setTimeout(() => setSaved(false), 2000);
     } else {
       toast.error("Please add at least one ingredient.");
     }
@@ -71,7 +76,6 @@ const PatientDietChart = () => {
     const updatedMealPlans = mealPlans.filter((_, idx) => idx !== index);
     setMealPlans(updatedMealPlans);
     localStorage.setItem("mealPlans", JSON.stringify(updatedMealPlans)); // Save to localStorage
-    saved;
   };
 
   const getPieChartData = (meal) => {
@@ -99,6 +103,13 @@ const PatientDietChart = () => {
 
       <main>
         <h3 className="text-lg font-bold text-sky-600 mb-6">Meal Plan for Patients</h3>
+
+        {/* Success Message */}
+        {saved && (
+          <div className="text-green-600 font-bold mb-4">
+            Meal plan saved successfully!
+          </div>
+        )}
 
         {/* Add New Meal Section */}
         <form onSubmit={handleAddMeal} className="bg-white p-4 rounded-lg shadow-md mb-8">
@@ -179,7 +190,7 @@ const PatientDietChart = () => {
         {/* Display Meals */}
         <div className="flex flex-wrap gap-4">
           {mealPlans.map((plan, index) => (
-            <div key={index} className="mb-4 bg-white p-4 rounded-lg flex  flex-col shadow-md w-1/3">
+            <div key={index} className="mb-4 bg-white p-4 rounded-lg flex flex-col shadow-md w-1/3">
               <h4 className="text-sm font-bold mb-2">
                 {plan.time}: {plan.meal}
               </h4>
